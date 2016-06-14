@@ -81,6 +81,6 @@ void loop()
      */
     for (int i = 0; i < 10; i++) {
         // Print the value of 'i'.
-        Serial.println(i)
+        Serial.println(i);
     }
 }
