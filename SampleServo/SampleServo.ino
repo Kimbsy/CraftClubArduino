@@ -1,5 +1,5 @@
 /**
- * This sketch introduces the Servo.h library with its Sero object.
+ * This sketch introduces the Servo.h library with its Servo object.
  *
  * It takes the servo from its minimum to its maximum angle and back again.
  *
@@ -10,7 +10,7 @@
 #include <Servo.h>
 
 // Create a Servo object.
-Servo myservo;
+Servo myServo;
 
 // This variable will represent the angle of the servo arm.
 int pos = 0;
@@ -18,7 +18,7 @@ int pos = 0;
 void setup()
 { 
     // Attach the servo object to pin 9.
-    myservo.attach(9);
+    myServo.attach(9);
 } 
 
 void loop() 
@@ -26,7 +26,7 @@ void loop()
     // From 0 to 180...
     for (pos = 0; pos < 180; pos++) {
         // Tell the servo to go to this angle.
-        myservo.write(pos);
+        myServo.write(pos);
         // Pause for 15 milliseconds.
         delay(15);
     }
@@ -34,7 +34,7 @@ void loop()
     // From 180 back down to 0...
     for (pos = 180; pos > 0; pos--) {
         // Tell the servo to go to this angle.
-        myservo.write(pos);
+        myServo.write(pos);
         // Pause for 15 milliseconds.
         delay(15);
     } 
