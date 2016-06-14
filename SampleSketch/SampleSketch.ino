@@ -42,8 +42,8 @@ void setup()
  * This is the main program loop function.
  *
  * This function is executed repeatedly forever. It is where the majority of our
- *   programming will take place. In this simple example we will try out some
- *   control structures and output messages over the USB serial port.
+ *   programming will take place. In this example we will try out using control
+ *   structures and functions to output messages over the USB serial port.
  */
 void loop()
 {
@@ -83,4 +83,43 @@ void loop()
         // Print the value of 'i'.
         Serial.println(i);
     }
+
+    /**
+     * Functions are a useful way of splitting up your code into more easily
+     *   managed parts. They can be quite tricky to understand at first.
+     *
+     * Most simple programs can be written without using functions.
+     */
+
+    // This function will output a message.
+    doTheCustomMessage();
+
+    // This function will return the number 42.
+    int fortyTwo = getTheNumber42();
+    Serial.print("The meaning of life is ");
+    Serial.println(fortyTwo);
+}
+
+/**
+ * This is a custom function which outputs a message over the USB serial
+ *   connection.
+ *
+ * It is a 'void' because it doesn't return anything.
+ */
+void doTheCustomMessage()
+{
+    Serial.println("This is from a function!");
+}
+
+/**
+ * This is a custom function which returns a value (in this case always 42).
+ *
+ * Notice that this function is described as an 'int' because that is the type
+ *   of the variable it is returning.
+ */
+int getTheNumber42()
+{
+    int number = 40 + 2;
+
+    return number;
 }

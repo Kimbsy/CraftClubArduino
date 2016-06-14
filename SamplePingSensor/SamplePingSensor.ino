@@ -41,7 +41,6 @@ void loop()
     // Shut off the signal
     digitalWrite(pingPin, LOW);
 
-
     /**
      * Then we need to listen for the rebound.
      *
