@@ -1,84 +1,80 @@
-/* Ping))) Sensor
-  
-   This sketch reads a PING))) ultrasonic rangefinder and returns the
-   distance to the closest object in range. To do this, it sends a pulse
-   to the sensor to initiate a reading, then listens for a pulse 
-   to return.  The length of the returning pulse is proportional to 
-   the distance of the object from the sensor.
-     
-   The circuit:
-	* +V connection of the PING))) attached to +5V
-	* GND connection of the PING))) attached to ground
-	* SIG connection of the PING))) attached to digital pin 7
-
-   http://www.arduino.cc/en/Tutorial/Ping
-   
-   created 3 Nov 2008
-   by David A. Mellis
-   modified 30 Aug 2011
-   by Tom Igoe
- 
-   This example code is in the public domain.
-
+/**
+ * This sketch demonstrates how to use an HC-SR04 Ultrasonic distance sensor.
+ *
+ * We will be trying to measure the distance (in cm) of an object in fornt of
+ *   the sensor. This sensor creates a 'ping' (a short ultrasonic beep) which
+ *   travels forward and bounces off any object which is in range. If the ping
+ *   reaches back to the sensor we can detect it and calculate how far away the
+ *   object is.
+ *
+ * @author Dave Kimber <https://github.com/Kimbsy>
  */
 
-// this constant won't change.  It's the pin number
-// of the sensor's output:
-const int pingPin = 12;
+// This is the pin we will be attaching the sensor to.
+int pingPin = 12;
 
+/**
+ * Setup function.
+ */
 void setup() {
-  // initialize serial communication:
-  Serial.begin(9600);
+    // Set up a connection to the USB serial port.
+    Serial.begin(9600);
 }
 
+/**
+ * Main loop function.
+ */
 void loop()
 {
-  // establish variables for duration of the ping, 
-  // and the distance result in inches and centimeters:
-  long duration, inches, cm;
+    /**
+     * First we need to send out a ping.
+     */
+    
+    // Set our sensor pin as an OUTPUT.
+    pinMode(pingPin, OUTPUT);
+    // Make sure it is not sending a signal.
+    digitalWrite(pingPin, LOW);
+    delayMicroseconds(2);
+    // Send out a HIGH signal for 2 microseconds.
+    digitalWrite(pingPin, HIGH);
+    delayMicroseconds(2);
+    // Shut off the signal
+    digitalWrite(pingPin, LOW);
 
-  // The PING))) is triggered by a HIGH pulse of 2 or more microseconds.
-  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
-  pinMode(pingPin, OUTPUT);
-  digitalWrite(pingPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(pingPin, HIGH);
-  delayMicroseconds(5);
-  digitalWrite(pingPin, LOW);
 
-  // The same pin is used to read the signal from the PING))): a HIGH
-  // pulse whose duration is the time (in microseconds) from the sending
-  // of the ping to the reception of its echo off of an object.
-  pinMode(pingPin, INPUT);
-  duration = pulseIn(pingPin, HIGH);
+    /**
+     * Then we need to listen for the rebound.
+     *
+     * We use the same pin (that's where the sensor is after all) but in a
+     *   different mode.
+     */
 
-  // convert the time into a distance
-  inches = microsecondsToInches(duration);
-  cm = microsecondsToCentimeters(duration);
-  
-  Serial.print(inches);
-  Serial.print("in, ");
-  Serial.print(cm);
-  Serial.print("cm");
-  Serial.println();
-  
-  delay(100);
+    // Set our sensor pin as an INPUT
+    pinMode(pingPin, INPUT);
+    // Measure the time in microseconds until we detect a rebounded HIGH signal.
+    long pingDuration = pulseIn(pingPin, HIGH);
+
+    // Calculate the distance based on the pingDuration.
+    long distance = microsecondsToCentimeters(pingDuration);
+
+    // Output the distance to the opbject.
+    Serial.print(distance);
+    Serial.println(" cm");
 }
 
-long microsecondsToInches(long microseconds)
+/**
+ * This function calculates the distance (in cm) sound travels in a given amount
+ *   of time throuhg air at room temperature.
+ *
+ * Taking the speed of sound in air to be 340 m/s, we can see that it will
+ *   travel 1 cm in 29 microseconds (1 / 340 = 0.00294117647).
+ *
+ * The sound wave needs to travel to the object and back so we halve the time.
+ */
+long microsecondsToCentimeters(long pingDuration)
 {
-  // According to Parallax's datasheet for the PING))), there are
-  // 73.746 microseconds per inch (i.e. sound travels at 1130 feet per
-  // second).  This gives the distance travelled by the ping, outbound
-  // and return, so we divide by 2 to get the distance of the obstacle.
-  // See: http://www.parallax.com/dl/docs/prod/acc/28015-PING-v1.3.pdf
-  return microseconds / 74 / 2;
-}
+    long roundTrip = pingDuration / 29;
+    long distance  = roundTrip / 2;
 
-long microsecondsToCentimeters(long microseconds)
-{
-  // The speed of sound is 340 m/s or 29 microseconds per centimeter.
-  // The ping travels out and back, so to find the distance of the
-  // object we take half of the distance travelled.
-  return microseconds / 29 / 2;
+    return distance;
 }

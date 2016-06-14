@@ -15,12 +15,18 @@ Servo myServo;
 // This variable will represent the angle of the servo arm.
 int pos = 0;
 
+/**
+ * Setup function.
+ */
 void setup()
 { 
     // Attach the servo object to pin 9.
     myServo.attach(9);
 } 
 
+/**
+ * Main loop function.
+ */
 void loop() 
 { 
     // From 0 to 180...

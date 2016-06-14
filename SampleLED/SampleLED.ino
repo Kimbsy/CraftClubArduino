@@ -7,12 +7,18 @@
 // Pin 13 has a built in LED attached to it.
 int ledPin = 13;
 
+/**
+ * Setup function.
+ */
 void setup()
 {
     // We need to set the led pin to OUTPUT mode.
     pinMode(ledPin, OUTPUT);
 }
 
+/**
+ * Main loop function.
+ */
 void loop()
 {
     // Turn the LED on by sending a HIGH signal to the LED pin.

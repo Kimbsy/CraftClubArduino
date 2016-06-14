@@ -14,12 +14,18 @@ dht dhtObj;
 // We will be connecting the sensor on this pin.
 int dhtPin = 7;
 
+/**
+ * Setup function.
+ */
 void setup()
 {
     // Set up a connection to the USB serial port.
     Serial.begin(9600);
 }
 
+/**
+ * Main loop function.
+ */
 void loop()
 {
     // Tell the dht object to take a reading from the sensor.
